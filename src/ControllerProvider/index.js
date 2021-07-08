@@ -28,7 +28,7 @@ const IPLookUp = 'http://ip-api.com/json/'
 
 // If dev mode, use proxy
 // Otherwise assume you are running on the Controller
-const getUrl = (path) => controllerJson.dev ? `/api/controllerApi${path}` : `${window.location.protocol}//${[window.location.hostname, controllerJson.port].join(':')}${path}`
+const getUrl = (path) => controllerJson.dev ? `/api/controllerApi${path}` : `${controllerJson.url}${path}`
 const getHeaders = (headers) => controllerJson.dev
   ? ({
     ...headers,
@@ -84,15 +84,10 @@ export default function Context (props) {
   React.useEffect(() => {
     // Grab controller location informations
     const effect = async () => {
-      let ipInfo = {}
-      try {
-        ipInfo = await lookUpControllerInfo(controllerJson.ip)
-      } catch (e) {
-        ipInfo = {
-          lat: 'Unknown',
-          lon: 'Unknown',
-          query: controllerJson.ip
-        }
+      let ipInfo = {
+        lat: 'Unknown',
+        lon: 'Unknown',
+        query: controllerJson.ip
       }
       setControllerLocation(ipInfo)
     }
