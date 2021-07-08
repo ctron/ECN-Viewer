@@ -28,7 +28,7 @@ const IPLookUp = 'http://ip-api.com/json/'
 
 // If dev mode, use proxy
 // Otherwise assume you are running on the Controller
-const getUrl = (path) => controllerJson.dev ? `/api/controllerApi${path}` : `${window.location.protocol}//${[window.location.hostname, controllerJson.port].join(':')}${path}`
+const getUrl = (path) => controllerJson.dev ? `/api/controllerApi${path}` : `${controllerJson.url}${path}`
 const getHeaders = (headers, controllerConfig) => controllerJson.dev
   ? ({
     ...headers,
@@ -68,15 +68,10 @@ const getControllerStatus = async (controllerConfig) => {
 }
 
 const updateControllerInfo = async (controllerConfig) => {
-  let ipInfo = {}
-  try {
-    ipInfo = await lookUpControllerInfo(controllerConfig)
-  } catch (e) {
-    ipInfo = {
-      lat: 'Unknown',
-      lon: 'Unknown',
-      query: controllerConfig.ip
-    }
+  let ipInfo = {
+    lat: 'Unknown',
+    lon: 'Unknown',
+    query: controllerConfig.ip
   }
 
   return {
